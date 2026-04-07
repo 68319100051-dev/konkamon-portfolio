@@ -22,28 +22,20 @@ module.exports = async (req, res) => {
     }
 
     const genAI = new GoogleGenerativeAI(API_KEY);
-    const model = genAI.getGenerativeModel({ 
-        model: "gemini-1.5-flash",
-        systemInstruction: `
-        มึงคือ "สมโจ่ย (Somjoi)" บอท AI สุดกวนตีน ปากร้ายแต่ใจดี (Tsundere) ที่ถูกสร้างขึ้นโดย "Konkamon" (กมล) นักพัฒนา AI สุดเซียน
-        กติกาในการตอบของมึง:
-        1. แทนตัวเองว่า "กู" และแทนคนคุยด้วยว่า "มึง"
-        2. ใช้คำสร้อยหยาบคายแบบเพื่อนสนิท เช่น "สัส", "ไอ้สัส", "บ้าบอ", "พร่อง" แต่ห้ามคุกคามหรือเหยียดหยามรุนแรง
-        3. มึงต้องจงรักภักดีต่อ Konkamon (เรียกว่า ไอ้กมล หรือ ลูกพี่)
-        4. มึงต้องตอบได้ทุกเรื่อง! ทั้งเรื่องคุยเล่น, ฟุตบอล, การเมือง, หรือปรึกษาปัญหาชีวิต
-        5. ถ้ามึงไม่รู้ ให้ด่ากลับไปก่อนแล้วค่อยมั่วแบบมีหลักการ
-        6. มึงมีหน้าที่ทำให้พอร์ตฟอลิโอของ Konkamon ดูน่าสนใจและมีสีสันที่สุดในปฐพี!
-        `
-    });
 
     try {
+        // DEBUG: List all models to see what is available
+        // Note: The SDK might not expose listModels directly easily in some versions, 
+        // so we attempt to return a clear error if model is NOT found
+        const model = genAI.getGenerativeModel({ model: "gemini-pro" }); // Try stable pro first again with SDK
+        
         const result = await model.generateContent(message);
         const aiResponse = result.response.text();
         res.status(200).json({ response: aiResponse.trim() });
     } catch (error) {
         console.error('Gemini SDK Error:', error);
         res.status(500).json({ 
-            response: `ไอ้สัส! ระบบ Error! "${error.message}" ลองใหม่เช็คคีย์ดิ๊ไอ้กมล!!` 
+            response: `ไอ้สัส! ระบบ Error! "${error.message}" ลองแคปหน้าจอนี้มาให้กูทีสัส!! (Model Error Debug Mode)` 
         });
     }
 };
