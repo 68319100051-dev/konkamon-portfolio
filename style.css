@@ -848,6 +848,13 @@ nav {
 .chat-window.somjoi-mode .ai-message {
     background: rgba(255, 0, 119, 0.15);
     border-left: 3px solid #ff0077;
+    animation: somjoiShake 0.3s ease-in-out;
+}
+
+@keyframes somjoiShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
 }
 
 .chat-input-area {
