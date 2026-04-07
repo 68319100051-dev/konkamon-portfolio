@@ -14,86 +14,94 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Select all project cards and headings to animate
+// Global initialization
 document.addEventListener("DOMContentLoaded", () => {
+    // 1. Scroll Animations
     const animatableElements = document.querySelectorAll(".project-card, .projects h2, .skills h2, .skill-item, .contact h2, .timeline-item, .journey h2");
-    
     animatableElements.forEach(el => {
-        el.style.opacity = "0";
-        el.style.transform = "translateY(30px)";
-        el.style.transition = "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)";
-        observer.observe(el);
+        if (el) {
+            el.style.opacity = "0";
+            el.style.transform = "translateY(30px)";
+            el.style.transition = "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)";
+            observer.observe(el);
+        }
     });
 
-    // Logo hover effect
+    // 2. Logo hover effect
     const logo = document.querySelector(".logo");
-    logo.addEventListener("mouseenter", () => {
-        logo.style.transform = "scale(1.1) rotate(-5deg)";
-        logo.style.transition = "0.3s cubic-bezier(0.4, 0, 0.2, 1)";
-    });
-    logo.addEventListener("mouseleave", () => {
-        logo.style.transform = "scale(1) rotate(0deg)";
-    });
+    if (logo) {
+        logo.addEventListener("mouseenter", () => {
+            logo.style.transform = "scale(1.1) rotate(-5deg)";
+            logo.style.transition = "0.3s cubic-bezier(0.4, 0, 0.2, 1)";
+        });
+        logo.addEventListener("mouseleave", () => {
+            logo.style.transform = "scale(1) rotate(0deg)";
+        });
+    }
+
+    // 3. Initial Chat Suggestions
+    setTimeout(renderSuggestions, 1500);
+
+    // 4. Cursor Glow
+    const cursorGlow = document.getElementById('cursor-glow');
+    if (cursorGlow) {
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+        });
+    }
+
+    // 5. Particle Background
+    initParticles();
+    animateParticles();
 });
 
 // Smooth scroll for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
-        });
+        const href = this.getAttribute('href');
+        if (href.startsWith('#')) {
+            const target = document.querySelector(href);
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
     });
 });
 
 // Modal Logic
 const overlay = document.getElementById('modal-overlay');
-
 function openModal(projectId) {
     const modal = document.getElementById(`modal-${projectId}`);
-    overlay.classList.add('active');
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden'; // Prevent scroll
+    if (overlay && modal) {
+        overlay.classList.add('active');
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
 }
-
 function closeModal() {
     const activeModal = document.querySelector('.modal.active');
     if (activeModal) activeModal.classList.remove('active');
-    overlay.classList.remove('active');
-    document.body.style.overflow = 'auto'; // Re-enable scroll
+    if (overlay) overlay.classList.remove('active');
+    document.body.style.overflow = 'auto';
 }
+if (overlay) overlay.addEventListener('click', closeModal);
+document.querySelectorAll('.close-modal').forEach(btn => btn.addEventListener('click', closeModal));
 
-// Close listeners
-overlay.addEventListener('click', closeModal);
-document.querySelectorAll('.close-modal').forEach(btn => {
-    btn.addEventListener('click', closeModal);
-});
-
-// ESC key to close
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeModal();
 });
 
-// Cursor Glow Effect
-const cursorGlow = document.getElementById('cursor-glow');
-if (cursorGlow) {
-    document.addEventListener('mousemove', (e) => {
-        cursorGlow.style.left = e.clientX + 'px';
-        cursorGlow.style.top = e.clientY + 'px';
-    });
-}
-
 // Particle Background Logic
 const canvas = document.getElementById('particle-canvas');
+let particles = [];
 if (canvas) {
     const ctx = canvas.getContext('2d');
-    let particles = [];
-
     function resize() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     }
-
     window.addEventListener('resize', resize);
     resize();
 
@@ -105,17 +113,12 @@ if (canvas) {
             this.speedX = Math.random() * 0.5 - 0.25;
             this.speedY = Math.random() * 0.5 - 0.25;
         }
-
         update() {
             this.x += this.speedX;
             this.y += this.speedY;
-
-            if (this.x > canvas.width) this.x = 0;
-            else if (this.x < 0) this.x = canvas.width;
-            if (this.y > canvas.height) this.y = 0;
-            else if (this.y < 0) this.y = canvas.height;
+            if (this.x > canvas.width) this.x = 0; else if (this.x < 0) this.x = canvas.width;
+            if (this.y > canvas.height) this.y = 0; else if (this.y < 0) this.y = canvas.height;
         }
-
         draw() {
             ctx.fillStyle = 'rgba(99, 102, 241, 0.4)';
             ctx.beginPath();
@@ -124,24 +127,20 @@ if (canvas) {
         }
     }
 
-    function initParticles() {
+    window.initParticles = () => {
         particles = [];
-        for (let i = 0; i < 80; i++) {
-            particles.push(new Particle());
-        }
-    }
+        for (let i = 0; i < 80; i++) particles.push(new Particle());
+    };
 
-    function animateParticles() {
+    window.animateParticles = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         for (let i = 0; i < particles.length; i++) {
             particles[i].update();
             particles[i].draw();
-
             for (let j = i; j < particles.length; j++) {
                 const dx = particles[i].x - particles[j].x;
                 const dy = particles[i].y - particles[j].y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
-
                 if (distance < 150) {
                     ctx.strokeStyle = `rgba(99, 102, 241, ${0.1 * (1 - distance / 150)})`;
                     ctx.lineWidth = 1;
@@ -152,11 +151,12 @@ if (canvas) {
                 }
             }
         }
-        requestAnimationFrame(animateParticles);
-    }
-
-    initParticles();
-    animateParticles();
+        requestAnimationFrame(window.animateParticles);
+    };
+} else {
+    // Fillers if no canvas on page
+    window.initParticles = () => {};
+    window.animateParticles = () => {};
 }
 
 // Email Copy Logic
@@ -169,8 +169,6 @@ function copyEmail(e) {
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
-    }).catch(err => {
-        console.error('Failed to copy: ', err);
     });
 }
 window.copyEmail = copyEmail;
@@ -181,16 +179,16 @@ const chatMessages = document.getElementById('chat-messages');
 const userInput = document.getElementById('user-input');
 
 function toggleChat() {
-    chatWindow.classList.toggle('active');
-    if (chatWindow.classList.contains('active')) {
-        userInput.focus();
+    if (chatWindow) {
+        chatWindow.classList.toggle('active');
+        if (chatWindow.classList.contains('active') && userInput) {
+            userInput.focus();
+        }
     }
 }
 
 function handleChatKey(e) {
-    if (e.key === 'Enter') {
-        sendChatMessage();
-    }
+    if (e.key === 'Enter') sendChatMessage();
 }
 
 function sendChatMessage() {
@@ -200,20 +198,19 @@ function sendChatMessage() {
     addMessage(text, 'user');
     userInput.value = '';
 
-    // Simulate AI thinking
     const typingId = 'typing-' + Date.now();
     addMessage('...', 'ai', typingId);
 
     setTimeout(() => {
         const typingElem = document.getElementById(typingId);
         if (typingElem) typingElem.remove();
-        
-        const response = getAIResponse(text);
-        addMessage(response, 'ai');
+        addMessage(getAIResponse(text), 'ai');
+        setTimeout(renderSuggestions, 1000);
     }, 1500);
 }
 
 function addMessage(text, sender, id = null) {
+    if (!chatMessages) return;
     const msgDiv = document.createElement('div');
     msgDiv.className = `message ${sender}-message`;
     if (id) msgDiv.id = id;
@@ -225,47 +222,52 @@ function addMessage(text, sender, id = null) {
 
 function getAIResponse(query) {
     const q = query.toLowerCase();
+    const isJourneyPage = window.location.pathname.includes('journey.html');
     
-    if (q.includes('สวัสดี') || q.includes('hi') || q.includes('hello')) {
-        return "สวัสดีครับ! ผมเป็น AI Assistant ของคุณ Konkamon ยินดีที่ได้รู้จักครับ";
-    }
-    if (q.includes('ใคร') || q.includes('ชื่อ')) {
-        return "ผมเป็น AI ที่สร้างขึ้นเพื่อช่วยเหลือผู้ที่เข้ามาชมพอร์ตของคุณ Konkamon ครับ";
-    }
-    if (q.includes('เจ็ท') || q.includes('jet-music') || q.includes('เพลง')) {
-        document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
-        return "Jet Music เป็นเครื่องเล่นเพลง PWA ที่มาพร้อมระบบซิงค์เนื้อเพลงอัตโนมัติครับ ผมเลื่อนหน้าจอไปให้คุณดูแล้ว!";
-    }
+    if (q.includes('สวัสดี') || q.includes('hi') || q.includes('hello')) return "สวัสดีครับ! ผมเป็น AI Assistant ยินดีที่ได้คุยครับ";
     if (q.includes('timeline') || q.includes('เส้นทาง') || q.includes('journey')) {
+        if (!isJourneyPage) {
+            window.location.href = "journey.html";
+            return "กำลังพาคุณไปยังหน้าเส้นทาง AI ครับ...";
+        }
         document.getElementById('journey').scrollIntoView({ behavior: 'smooth' });
         return "นี่คือเส้นทางสาย AI ของคุณ Konkamon ครับ ตั้งแต่จุดเริ่มต้นจนถึงโปรเจ็กต์ปัจจุบัน!";
     }
+    if (q.includes('เจ็ท') || q.includes('jet') || q.includes('เพลง')) {
+        if (isJourneyPage) {
+            window.location.href = "index.html#projects";
+            return "กำลังพาคุณกลับไปที่หน้าหลักเพื่อดู Jet Music ครับ...";
+        }
+        const target = document.getElementById('projects');
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+        return "Jet Music เป็นเครื่องเล่นเพลง PWA ที่มาพร้อมระบบซิงค์เนื้อเพลงอัตโนมัติครับ!";
+    }
     if (q.includes('google form') || q.includes('filler') || q.includes('ฟอร์ม')) {
-        document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
-        return "AI Google Form Filler เป็นเครื่องมือช่วยกรอกฟอร์มอัตโนมัติที่ฉลาดมากครับ ลองดูรายละเอียดได้เลย";
+        if (isJourneyPage) {
+            window.location.href = "index.html#projects";
+            return "กำลังพาคุณกลับไปที่หน้าหลักเพื่อดู AI Form Filler ครับ...";
+        }
+        const target = document.getElementById('projects');
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+        return "AI Google Form Filler เป็นเครื่องมือช่วยกรอกฟอร์มอัตโนมัติที่ฉลาดมากครับ!";
     }
     if (q.includes('ติดต่อ') || q.includes('อีเมล')) {
-        document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
-        return "คุณสามารถติดต่อคุณ Konkamon ได้ผ่านส่วน Contact ด้านล่างนี้เลยครับ";
+        if (isJourneyPage) {
+            window.location.href = "index.html#contact";
+            return "กำลังพาคุณกลับไปที่หน้าหลักเพื่อดูข้อมูลการติดต่อครับ...";
+        }
+        const target = document.getElementById('contact');
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+        return "คุณสามารถติดต่อคุณ Konkamon ได้ที่ส่วนล่างสุดของหน้าหลักเลยครับ";
     }
-    
-    return "เป็นคำถามที่น่าสนใจครับ! แต่ตอนนี้ผมยังเรียนรู้ได้จำกัด ลองถามเกี่ยวกับ โปรเจ็กต์ หรือ การติดต่อ ดูไหมครับ?";
+    return "ลองถามเกี่ยวกับ 'เส้นทาง AI' หรือ 'โปรเจ็กต์' ดูไหมครับ?";
 }
 
-window.toggleChat = toggleChat;
-window.sendChatMessage = sendChatMessage;
-window.handleChatKey = handleChatKey;
-
-// Suggestions System
 const suggestionContainer = document.getElementById('chat-suggestions');
-const suggestions = [
-    "เส้นทางสาย AI ของคุณคืออะไร?",
-    "ดูโปรเจ็กต์ Jet Music",
-    "ดูโปรเจ็กต์ AI Form Filler",
-    "ติดต่อคุณ Konkamon"
-];
+const suggestions = ["เส้นทางสาย AI ของคุณคืออะไร?", "ดูโปรเจ็กต์ทั้งหมด", "ติดต่อคุณ Konkamon"];
 
 function renderSuggestions() {
+    if (!suggestionContainer) return;
     suggestionContainer.innerHTML = '';
     suggestions.forEach(text => {
         const chip = document.createElement('div');
@@ -274,22 +276,15 @@ function renderSuggestions() {
         chip.onclick = () => {
             userInput.value = text;
             sendChatMessage();
-            suggestionContainer.style.display = 'none'; // Hide after use
+            suggestionContainer.style.display = 'none';
         };
         suggestionContainer.appendChild(chip);
     });
     suggestionContainer.style.display = 'flex';
 }
 
-// Show suggestions after each AI response or on start
-document.addEventListener('DOMContentLoaded', () => {
-    // Other init logic...
-    setTimeout(renderSuggestions, 1000);
-});
-
-// Update sending logic to reapppear suggestions
-const originalSendChatMessage = sendChatMessage;
-window.sendChatMessage = () => {
-    originalSendChatMessage();
-    setTimeout(renderSuggestions, 3000); // Re-show after response
-};
+window.toggleChat = toggleChat;
+window.sendChatMessage = sendChatMessage;
+window.handleChatKey = handleChatKey;
+window.openModal = openModal;
+window.closeModal = closeModal;
