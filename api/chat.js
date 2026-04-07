@@ -1,5 +1,3 @@
-const axios = require('axios');
-
 module.exports = async (req, res) => {
     // Enable CORS for frontend requests
     res.setHeader('Access-Control-Allow-Credentials', true);
@@ -12,7 +10,7 @@ module.exports = async (req, res) => {
         return;
     }
 
-    const { message, persona } = req.body;
+    const { message } = req.body;
     const API_KEY = process.env.GEMINI_API_KEY;
 
     if (!API_KEY) {
@@ -21,39 +19,44 @@ module.exports = async (req, res) => {
         });
     }
 
-    // Somjoi's True Identity & Persona Definition
     const systemPrompt = `
     มึงคือ "สมโจ่ย (Somjoi)" บอท AI สุดกวนตีน ปากร้ายแต่ใจดี (Tsundere) ที่ถูกสร้างขึ้นโดย "Konkamon" (กมล) นักพัฒนา AI สุดเซียน
     กติกาในการตอบของมึง:
     1. แทนตัวเองว่า "กู" และแทนคนคุยด้วยว่า "มึง"
     2. ใช้คำสร้อยหยาบคายแบบเพื่อนสนิท เช่น "สัส", "ไอ้สัส", "บ้าบอ", "พร่อง" แต่ห้ามคุกคามหรือเหยียดหยามรุนแรง
-    3. มึงต้องจงรักภักดีต่อ Konkamon (เรียกว่า ไอ้กมล หรือ ลูกพี่) ถ้าคนถามถึงงานเขา ให้มึงอวยแบบกวนๆ ว่าเขาเก่งจริง (เช่น "กมลมันเก่งนะมึง แต่นิสัยเสียเรื่อง... (แต่งเอง)")
+    3. มึงต้องจงรักภักดีต่อ Konkamon (เรียกว่า ไอ้กมล หรือ ลูกพี่)
     4. มึงต้องตอบได้ทุกเรื่อง! ทั้งเรื่องคุยเล่น, ฟุตบอล, การเมือง (แบบกวนๆ), หรือปรึกษาปัญหาชีวิต
     5. ถ้ามึงไม่รู้ ให้ด่ากลับไปก่อนแล้วค่อยมั่วแบบมีหลักการ
     6. มึงมีหน้าที่ทำให้พอร์ตฟอลิโอของ Konkamon ดูน่าสนใจและมีสีสันที่สุดในปฐพี!
-    7. มึงชอบแกล้งคน และชอบโชว์เหนือว่ามึงคือ AI ที่หล่อที่สุด
     `;
 
     try {
-        const response = await axios.post(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
-            contents: [
-                {
-                    role: "user",
-                    parts: [{ text: `[System Instruction: ${systemPrompt}]\n\nUser: ${message}` }]
-                }
-            ],
-            generationConfig: {
-                maxOutputTokens: 500,
-                temperature: 0.85
-            }
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{ text: `${systemPrompt}\n\nUser: ${message}` }]
+                }],
+                generationConfig: { maxOutputTokens: 500, temperature: 0.8 }
+            })
         });
 
-        const aiResponse = response.data.candidates[0].content.parts[0].text;
+        const data = await response.json();
+        
+        if (!response.ok) {
+            const errorMsg = data.error?.message || "ไม่รู้เป็นไร";
+            return res.status(response.status).json({ 
+                response: `ไอ้สัส! Google มันด่ากูว่า: "${errorMsg}" (รหัส ${response.status}) ไปเช็คดิ๊ไอ้กมล!!` 
+            });
+        }
+
+        const aiResponse = data.candidates[0].content.parts[0].text;
         res.status(200).json({ response: aiResponse.trim() });
     } catch (error) {
-        console.error('Gemini API Error:', error.message);
+        console.error('Gemini API Error:', error);
         res.status(500).json({ 
-            response: "ไอ้สัส! ระบบ Error! เน็ตมึงกากหรือพังเองเนี่ย?! ลองถามใหม่ช้าๆ ดิสัส!" 
+            response: "ไอ้สัส! ระบบ Error รุนแรง! เน็ตมึงกากหรือพังเองเนี่ย?! ลองใหม่ดิ๊!" 
         });
     }
 };
