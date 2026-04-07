@@ -35,19 +35,89 @@ body {
     z-index: -1;
 }
 
+/* Stats Section */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    padding: 4rem 10%;
+    text-align: center;
+}
+
+.stat-item h2 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 15px var(--accent-glow);
+}
+
+.stat-item p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
 /* Header/Nav */
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2rem 10%;
+    padding: 1.2rem 10%;
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 100;
+    z-index: 1000;
     background: rgba(5, 5, 5, 0.8);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--glass-border);
+}
+
+/* Live Status */
+.live-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    margin-right: auto;
+    margin-left: 2rem;
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: #00ff88;
+    border-radius: 50%;
+    position: relative;
+}
+
+.pulse-dot::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background: #00ff88;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+}
+
+.status-text {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
 }
 
 .logo {
@@ -391,20 +461,93 @@ nav {
     color: var(--text-secondary);
 }
 
+/* Heatmap Section */
+.heatmap-section {
+    padding: 6rem 10%;
+    text-align: center;
+}
+
+.heatmap-section h2 {
+    font-size: 2rem;
+    margin-bottom: 3rem;
+}
+
+.heatmap-container {
+    display: grid;
+    grid-template-columns: repeat(52, 1fr);
+    gap: 4px;
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+}
+
+.heatmap-cell {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    background: #1a1a2e;
+    transition: 0.2s;
+}
+
+.heatmap-cell:hover {
+    transform: scale(1.4);
+    box-shadow: 0 0 10px var(--accent-glow);
+    z-index: 5;
+}
+
+.level-0 { background: #1a1a2e; }
+.level-1 { background: #312e81; }
+.level-2 { background: #4338ca; }
+.level-3 { background: #6366f1; box-shadow: 0 0 5px var(--accent-glow); }
+
+.heatmap-legend {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.legend-cells {
+    display: flex;
+    gap: 4px;
+}
+
+.legend-cells .cell {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+}
+.cell.level-0 { background: #1a1a2e; }
+.cell.level-1 { background: #312e81; }
+.cell.level-2 { background: #4338ca; }
+.cell.level-3 { background: #6366f1; }
+
+/* Video Containers */
+.video-container {
+    width: 100%;
+    margin-bottom: 2rem;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+}
+
+.video-container img {
+    width: 100%;
+    display: block;
+}
+
 @media (max-width: 768px) {
-    .timeline-line {
-        left: 20px;
+    .heatmap-container {
+        grid-template-columns: repeat(26, 1fr);
+        overflow-x: auto;
     }
-    .timeline-item {
-        width: 100%;
-        left: 0 !important;
-        padding-left: 4rem !important;
-        padding-right: 0 !important;
-        text-align: left !important;
-    }
-    .timeline-node {
-        left: 10px !important;
-    }
+    .live-status { display: none; }
 }
 
 /* Contact Section */

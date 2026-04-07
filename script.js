@@ -7,27 +7,57 @@ const observerOptions = {
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
+            entry.target.classList.add('show');
             entry.target.style.opacity = "1";
             entry.target.style.transform = "translateY(0)";
+            
+            // Trigger counter animation if it's a counter
+            if (entry.target.classList.contains('counter')) {
+                animateCounter(entry.target);
+            }
+            
             observer.unobserve(entry.target);
         }
     });
 }, observerOptions);
 
+function animateCounter(el) {
+    const target = parseInt(el.getAttribute('data-target'));
+    const duration = 2000; // 2 seconds
+    const start = 0;
+    const increment = target / (duration / 16); // 60fps
+    let current = start;
+
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+            el.textContent = target;
+            clearInterval(timer);
+        } else {
+            el.textContent = Math.floor(current);
+        }
+    }, 16);
+}
+
 // Global initialization
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Scroll Animations
-    const animatableElements = document.querySelectorAll(".project-card, .projects h2, .skills h2, .skill-item, .contact h2, .timeline-item, .journey h2");
+    // 1. Scroll Animations & Counters
+    const animatableElements = document.querySelectorAll(".project-card, .projects h2, .skills h2, .skill-item, .contact h2, .timeline-item, .journey h2, .counter");
     animatableElements.forEach(el => {
         if (el) {
-            el.style.opacity = "0";
-            el.style.transform = "translateY(30px)";
+            if (!el.classList.contains('counter')) {
+                el.style.opacity = "0";
+                el.style.transform = "translateY(30px)";
+            }
             el.style.transition = "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)";
             observer.observe(el);
         }
     });
 
-    // 2. Logo hover effect
+    // 2. Heatmap Generation
+    generateHeatmap();
+
+    // 3. Logo hover effect
     const logo = document.querySelector(".logo");
     if (logo) {
         logo.addEventListener("mouseenter", () => {
@@ -39,10 +69,10 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 3. Initial Chat Suggestions
+    // 4. Initial Chat Suggestions
     setTimeout(renderSuggestions, 1500);
 
-    // 4. Cursor Glow
+    // 5. Cursor Glow
     const cursorGlow = document.getElementById('cursor-glow');
     if (cursorGlow) {
         document.addEventListener('mousemove', (e) => {
@@ -51,10 +81,35 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 5. Particle Background
-    initParticles();
-    animateParticles();
+    // 6. Particle Background
+    if (typeof initParticles === 'function') initParticles();
+    if (typeof animateParticles === 'function') animateParticles();
 });
+
+function generateHeatmap() {
+    const container = document.getElementById('heatmap-container');
+    if (!container) return;
+
+    // 52 weeks * 7 days = 364 cells
+    for (let i = 0; i < 364; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'heatmap-cell';
+        
+        // Randomize activity level for visual effect
+        const random = Math.random();
+        let level = 0;
+        if (random > 0.9) level = 3;
+        else if (random > 0.7) level = 2;
+        else if (random > 0.4) level = 1;
+        
+        cell.classList.add(`level-${level}`);
+        
+        // Tooltip simulation
+        cell.title = `Activity Level: ${level}`;
+        
+        container.appendChild(cell);
+    }
+}
 
 // Smooth scroll for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
