@@ -31,7 +31,8 @@ module.exports = async (req, res) => {
     `;
 
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+        // Try gemini-pro first as it's the most stable/available
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -47,7 +48,7 @@ module.exports = async (req, res) => {
         if (!response.ok) {
             const errorMsg = data.error?.message || "ไม่รู้เป็นไร";
             return res.status(response.status).json({ 
-                response: `ไอ้สัส! Google มันด่ากูว่า: "${errorMsg}" (รหัส ${response.status}) ไปเช็คดิ๊ไอ้กมล!!` 
+                response: `ไอ้สัส! Google มันด่ากูว่า: "${errorMsg}" (รหัส ${response.status}) ลองเปลี่ยนเป็น gemini-pro หรือเช็คคีย์ดิ๊ไอ้กมล!!` 
             });
         }
 
