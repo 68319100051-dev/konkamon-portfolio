@@ -265,6 +265,132 @@ nav {
     color: var(--text-secondary);
 }
 
+/* Journey Timeline */
+.journey {
+    padding: 8rem 10%;
+    position: relative;
+    overflow: hidden;
+}
+
+.journey h2 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 5rem;
+}
+
+.timeline {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.timeline-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, var(--accent-color), transparent);
+    transform: translateX(-50%);
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.timeline-item {
+    position: relative;
+    width: 50%;
+    padding: 2rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.timeline-item.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.timeline-item.left {
+    left: 0;
+    padding-right: 4rem;
+    text-align: right;
+}
+
+.timeline-item.right {
+    left: 50%;
+    padding-left: 4rem;
+    text-align: left;
+}
+
+.timeline-node {
+    position: absolute;
+    top: 2rem;
+    width: 20px;
+    height: 20px;
+    background: var(--bg-color);
+    border: 3px solid var(--accent-color);
+    border-radius: 50%;
+    z-index: 10;
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.left .timeline-node {
+    right: -10px;
+}
+
+.right .timeline-node {
+    left: -10px;
+}
+
+.timeline-content {
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    padding: 2rem;
+    border-radius: 24px;
+    backdrop-filter: blur(10px);
+    transition: 0.3s;
+}
+
+.timeline-content:hover {
+    border-color: var(--accent-color);
+    transform: scale(1.02);
+}
+
+.timeline-content .date {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--accent-color);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.timeline-content h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+}
+
+.timeline-content p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+    .timeline-line {
+        left: 20px;
+    }
+    .timeline-item {
+        width: 100%;
+        left: 0 !important;
+        padding-left: 4rem !important;
+        padding-right: 0 !important;
+        text-align: left !important;
+    }
+    .timeline-node {
+        left: 10px !important;
+    }
+}
+
 /* Contact Section */
 .contact {
     padding: 8rem 10%;

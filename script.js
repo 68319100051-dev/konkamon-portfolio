@@ -16,7 +16,7 @@ const observer = new IntersectionObserver((entries) => {
 
 // Select all project cards and headings to animate
 document.addEventListener("DOMContentLoaded", () => {
-    const animatableElements = document.querySelectorAll(".project-card, .projects h2, .skills h2, .skill-item, .contact h2");
+    const animatableElements = document.querySelectorAll(".project-card, .projects h2, .skills h2, .skill-item, .contact h2, .timeline-item, .journey h2");
     
     animatableElements.forEach(el => {
         el.style.opacity = "0";
@@ -232,9 +232,13 @@ function getAIResponse(query) {
     if (q.includes('ใคร') || q.includes('ชื่อ')) {
         return "ผมเป็น AI ที่สร้างขึ้นเพื่อช่วยเหลือผู้ที่เข้ามาชมพอร์ตของคุณ Konkamon ครับ";
     }
-    if (q.includes('jet music') || q.includes('เพลง')) {
+    if (q.includes('เจ็ท') || q.includes('jet-music') || q.includes('เพลง')) {
         document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
         return "Jet Music เป็นเครื่องเล่นเพลง PWA ที่มาพร้อมระบบซิงค์เนื้อเพลงอัตโนมัติครับ ผมเลื่อนหน้าจอไปให้คุณดูแล้ว!";
+    }
+    if (q.includes('timeline') || q.includes('เส้นทาง') || q.includes('journey')) {
+        document.getElementById('journey').scrollIntoView({ behavior: 'smooth' });
+        return "นี่คือเส้นทางสาย AI ของคุณ Konkamon ครับ ตั้งแต่จุดเริ่มต้นจนถึงโปรเจ็กต์ปัจจุบัน!";
     }
     if (q.includes('google form') || q.includes('filler') || q.includes('ฟอร์ม')) {
         document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
@@ -255,7 +259,7 @@ window.handleChatKey = handleChatKey;
 // Suggestions System
 const suggestionContainer = document.getElementById('chat-suggestions');
 const suggestions = [
-    "ทำอะไรได้บ้าง?",
+    "เส้นทางสาย AI ของคุณคืออะไร?",
     "ดูโปรเจ็กต์ Jet Music",
     "ดูโปรเจ็กต์ AI Form Filler",
     "ติดต่อคุณ Konkamon"
