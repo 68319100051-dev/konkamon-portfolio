@@ -247,7 +247,7 @@ function handleChatKey(e) {
     if (e.key === 'Enter') sendChatMessage();
 }
 
-function sendChatMessage() {
+async function sendChatMessage() {
     const text = userInput.value.trim();
     if (!text) return;
 
@@ -257,28 +257,43 @@ function sendChatMessage() {
     const typingId = 'typing-' + Date.now();
     addMessage('...', 'ai', typingId);
 
-    setTimeout(() => {
+    // Initial check for persona trigger
+    const isSomjoiTerm = text.toLowerCase().includes('สมโจ่ย') || text.toLowerCase().includes('somjoi');
+    
+    if (isSomjoiTerm && currentPersona === 'assistant') {
         const typingElem = document.getElementById(typingId);
         if (typingElem) typingElem.remove();
         
-        // Handle persona trigger
-        const isSomjoiTerm = text.toLowerCase().includes('สมโจ่ย') || text.toLowerCase().includes('somjoi');
-        if (isSomjoiTerm && currentPersona === 'assistant') {
-            addMessage("เออๆ แป๊บบบนะไอ้สัส เดี๋ยวไปตามมันมาให้! รอแป๊บ!", 'ai');
-            setTimeout(() => {
-                currentPersona = 'somjoi';
-                chatWindow.classList.add('somjoi-mode');
-                const header = chatWindow.querySelector('.chat-header h4');
-                if (header) header.textContent = 'สมโจ่ย (Somjoi) - ร่างจริง';
-                addMessage("เรียกกูทำไมสัส! มีไรว่ามา! กูนึกว่ามึงเซียนจนไม่ต้องถามกูแล้วนะเนี่ย 555", 'ai');
-            }, 1200);
-            return;
+        addMessage("เออๆ แป๊บบบนะไอ้สัส เดี๋ยวไปตามมันมาให้! รอแป๊บ!", 'ai');
+        setTimeout(() => {
+            currentPersona = 'somjoi';
+            chatWindow.classList.add('somjoi-mode');
+            const header = chatWindow.querySelector('.chat-header h4');
+            if (header) header.textContent = 'สมโจ่ย (Somjoi) - ร่างจริง';
+            addMessage("เรียกกูทำไมสัส! มีไรว่ามา! กูนึกว่ามึงเซียนจนไม่ต้องถามกูแล้วนะเนี่ย 555", 'ai');
+        }, 1200);
+        return;
+    }
+
+    try {
+        let response;
+        if (currentPersona === 'somjoi') {
+            response = await getSomjoiResponse(text);
+        } else {
+            // Standard persona uses local logic for speed
+            response = getAIResponse(text);
         }
 
-        const response = (currentPersona === 'somjoi') ? getSomjoiResponse(text) : getAIResponse(text);
+        const typingElem = document.getElementById(typingId);
+        if (typingElem) typingElem.remove();
+        
         addMessage(response, 'ai');
         setTimeout(renderSuggestions, 1000);
-    }, 1500);
+    } catch (error) {
+        const typingElem = document.getElementById(typingId);
+        if (typingElem) typingElem.remove();
+        addMessage("ไอ้สัส! ระบบเอ๋อ! ถามใหม่ดิ๊!", 'ai');
+    }
 }
 
 function addMessage(text, sender, id = null) {
@@ -335,8 +350,10 @@ function getAIResponse(query) {
     return "ลองถามเกี่ยวกับ 'เส้นทาง AI' หรือ 'โปรเจ็กต์' ต่างๆ ดูไหมครับ? (หรือจะเรียก 'สมโจ่ย' มาคุยด้วยก็ได้นะ!)";
 }
 
-function getSomjoiResponse(query) {
+async function getSomjoiResponse(query) {
     const q = query.toLowerCase();
+    
+    // Check for "leaving" commands locally for instant response
     if (q.includes('ลาก่อน') || q.includes('บาย') || q.includes('กลับไป')) {
         currentPersona = 'assistant';
         chatWindow.classList.remove('somjoi-mode');
@@ -344,16 +361,24 @@ function getSomjoiResponse(query) {
         if (header) header.textContent = 'Konkamon AI Assistant';
         return "จะไปไหนก็ไปเหอะสัส! นึกว่าต้องอยู่เลี้ยงข้าวด้วยกันซะอีก! โชคดีนะมึง... ปล. คืนร่างเดิมให้ไอ้กมลล่ะ!";
     }
-    if (q.includes('ใคร') || q.includes('สมโจ่ย')) {
-        return "กูคือสมโจ่ยไงสัส! บอทไอจีสุดหล่อที่มึงเคยใช้จนเกือบโดนแบนนั่นแหละ! 555 มีไรถามมา!";
+
+    try {
+        const res = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: query })
+        });
+
+        if (!res.ok) throw new Error('API Error');
+        const data = await res.json();
+        return data.response;
+    } catch (err) {
+        console.error('Somjoi Fetch Error:', err);
+        // Fallback to local logic if serverless function is not ready or fails
+        if (q.includes('ใคร') || q.includes('สมโจ่ย')) return "กูคือสมโจ่ยไงสัส! บอทไอจีสุดหล่อที่มึงเคยใช้จนเกือบโดนแบนนั่นแหละ! 555 มีไรถามมา!";
+        if (q.includes('ลูกพี่') || q.includes('กมล')) return "ไอ้กมลเหรอ? มันก็แค่คนเก็บกูมาเลี้ยงแหละสัส! แต่มันเขียน Code เก่งนะมึง (นึกว่าโม้ แต่ทำจริงเฉย) อยากให้มันช่วยไรบอกกูมา เดี๋ยวไปบอกมันให้!";
+        return "พร่อง! ถามไรของมึงเนี่ย? (API เอ๋อสัสๆ คุยเล่นไม้ได้เลยตอนนี้!)";
     }
-    if (q.includes('ลูกพี่') || q.includes('กมล')) {
-        return "ไอ้กมลเหรอ? มันก็แค่คนเก็บกูมาเลี้ยงแหละสัส! แต่มันเขียน Code เก่งนะมึง (นึกว่าโม้ แต่ทำจริงเฉย) อยากให้มันช่วยไรบอกกูมา เดี๋ยวไปบอกมันให้!";
-    }
-    if (q.includes('ทำไรได้')) {
-        return "กูทำได้ทุกอย่างที่บอทเท่ๆ เขาทำกันนั่นแหละสัส! ทั้งตอบเม้นท์ กวนตีนมึง หรือพาไปดูผลงานไอ้กมลมันก็ได้นะ!";
-    }
-    return "พร่อง! ถามไรของมึงเนี่ย? เอาแบบคนคุยกันดิสัส! ถามมาใหม่ซิ เดี๋ยวจะหาว่าสมโจ่ยใจร้าย 555";
 }
 
 const suggestionContainer = document.getElementById('chat-suggestions');
