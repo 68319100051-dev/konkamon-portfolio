@@ -232,6 +232,7 @@ window.copyEmail = copyEmail;
 const chatWindow = document.getElementById('ai-chat-window');
 const chatMessages = document.getElementById('chat-messages');
 const userInput = document.getElementById('user-input');
+let currentPersona = 'assistant'; // 'assistant' or 'somjoi'
 
 function toggleChat() {
     if (chatWindow) {
@@ -259,7 +260,23 @@ function sendChatMessage() {
     setTimeout(() => {
         const typingElem = document.getElementById(typingId);
         if (typingElem) typingElem.remove();
-        addMessage(getAIResponse(text), 'ai');
+        
+        // Handle persona trigger
+        const isSomjoiTerm = text.toLowerCase().includes('สมโจ่ย') || text.toLowerCase().includes('somjoi');
+        if (isSomjoiTerm && currentPersona === 'assistant') {
+            addMessage("กำลังเรียกสมโจ่ยให้ลูกพี่ครับ รอแป๊บนึงก๊าบบบ... 🏃‍♂️💨", 'ai');
+            setTimeout(() => {
+                currentPersona = 'somjoi';
+                chatWindow.classList.add('somjoi-mode');
+                const header = chatWindow.querySelector('.chat-header h4');
+                if (header) header.textContent = 'Somjoi (สมโจ่ย) - AI ตัวกวน';
+                addMessage("มาแล้ววววววววก๊าบบบ! สมโจ่ยพร้อมรับใช้ลูกพี่ Konkamon แล้วจ๊ะ! มีอะไรให้สมโจ่ยช่วยกวน เอ๊ย ช่วยตอบไหมก๊าบบบ? 💥🚀", 'ai');
+            }, 1000);
+            return;
+        }
+
+        const response = (currentPersona === 'somjoi') ? getSomjoiResponse(text) : getAIResponse(text);
+        addMessage(response, 'ai');
         setTimeout(renderSuggestions, 1000);
     }, 1500);
 }
@@ -315,11 +332,32 @@ function getAIResponse(query) {
         if (target) target.scrollIntoView({ behavior: 'smooth' });
         return "คุณสามารถติดต่อคุณ Konkamon ได้ที่ส่วนล่างสุดของหน้าหลักเลยครับ";
     }
-    return "ลองถามเกี่ยวกับ 'เส้นทาง AI' หรือ 'โปรเจ็กต์' ดูไหมครับ?";
+    return "ลองถามเกี่ยวกับ 'เส้นทาง AI' หรือ 'โปรเจ็กต์' ต่างๆ ดูไหมครับ? (หรือจะเรียก 'สมโจ่ย' มาคุยด้วยก็ได้นะ!)";
+}
+
+function getSomjoiResponse(query) {
+    const q = query.toLowerCase();
+    if (q.includes('ลาก่อน') || q.includes('บาย') || q.includes('กลับไป')) {
+        currentPersona = 'assistant';
+        chatWindow.classList.remove('somjoi-mode');
+        const header = chatWindow.querySelector('.chat-header h4');
+        if (header) header.textContent = 'Konkamon AI Assistant';
+        return "ไปแล้วเหรอจ๊ะ? นึกว่าต้องอยู่กินข้าวด้วยกันซะอีก! โชคดีก๊าบบบ... ปล. คืนร่างเดิมให้ลูกพี่แล้วนะ!";
+    }
+    if (q.includes('ใคร') || q.includes('สมโจ่ย')) {
+        return "สมโจ่ยไงจ๊ะ! AI ที่หล่อและกวนที่สุดในปฐพี ลูกพี่ Konkamon ปั้นมากับมือเพื่อช่วยตอบคำถามแบบไม่น่าเบื่อก๊าบบบ!";
+    }
+    if (q.includes('ลูกพี่') || q.includes('กมล')) {
+        return "ลูกพี่ Konkamon คือตำนานที่ยังมีลมหายใจครับ! เก่งทั้ง AI ทั้ง Code อยากให้เขาช่วยทำอะไรบอกสมโจ่ยมาได้เลย เดี๋ยวจัดการให้ก๊าบบบ!";
+    }
+    if (q.includes('ทำไรได้')) {
+        return "สมโจ่ยทำได้ทุกอย่างจ้า! ทั้งตอบคำถาม พาดูโปรเจ็กต์ลูกพี่ หรือจะให้กวนคุณเล่นๆ ก็จัดให้ได้หมดก๊าบบบ!";
+    }
+    return "อะไรนะก๊าบบบ? ขออีกรอบชัดๆ ทีได้ไหม พอดีสมโจ่ยกำลังยุ่งกับการหล่ออยู่จ๊ะ! 555 ล้อเล่นๆ ถามมาใหม่ได้เลยก๊าบบบ!";
 }
 
 const suggestionContainer = document.getElementById('chat-suggestions');
-const suggestions = ["เส้นทางสาย AI ของคุณคืออะไร?", "ดูโปรเจ็กต์ทั้งหมด", "ติดต่อคุณ Konkamon"];
+const suggestions = ["เรียก 'สมโจ่ย' มาคุย!", "เส้นทางสาย AI ของคุณคืออะไร?", "ดูโปรเจ็กต์ทั้งหมด"];
 
 function renderSuggestions() {
     if (!suggestionContainer) return;

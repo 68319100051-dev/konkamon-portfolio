@@ -835,6 +835,21 @@ nav {
     border-bottom-right-radius: 2px;
 }
 
+/* Somjoi Mode UI */
+.chat-window.somjoi-mode {
+    border-color: #ff0077;
+    box-shadow: 0 30px 60px rgba(255, 0, 119, 0.3);
+}
+
+.chat-window.somjoi-mode .chat-header {
+    background: linear-gradient(90deg, #ff0077, #ff9900);
+}
+
+.chat-window.somjoi-mode .ai-message {
+    background: rgba(255, 0, 119, 0.15);
+    border-left: 3px solid #ff0077;
+}
+
 .chat-input-area {
     padding: 1rem 1.25rem;
     display: flex;
