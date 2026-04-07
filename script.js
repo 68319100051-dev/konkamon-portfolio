@@ -369,15 +369,15 @@ async function getSomjoiResponse(query) {
             body: JSON.stringify({ message: query })
         });
 
-        if (!res.ok) throw new Error('API Error');
         const data = await res.json();
+        if (!res.ok) return data.response || "ไอ้สัส! ระบบเอ๋อรุนแรง! ไปดูหลังบ้านดิ๊!";
         return data.response;
     } catch (err) {
         console.error('Somjoi Fetch Error:', err);
-        // Fallback to local logic if serverless function is not ready or fails
+        // Fallback to local logic if serverless function is completely down (network error)
         if (q.includes('ใคร') || q.includes('สมโจ่ย')) return "กูคือสมโจ่ยไงสัส! บอทไอจีสุดหล่อที่มึงเคยใช้จนเกือบโดนแบนนั่นแหละ! 555 มีไรถามมา!";
         if (q.includes('ลูกพี่') || q.includes('กมล')) return "ไอ้กมลเหรอ? มันก็แค่คนเก็บกูมาเลี้ยงแหละสัส! แต่มันเขียน Code เก่งนะมึง (นึกว่าโม้ แต่ทำจริงเฉย) อยากให้มันช่วยไรบอกกูมา เดี๋ยวไปบอกมันให้!";
-        return "พร่อง! ถามไรของมึงเนี่ย? (API เอ๋อสัสๆ คุยเล่นไม้ได้เลยตอนนี้!)";
+        return "พร่อง! ถามไรของมึงเนี่ย? (เน็ตมึงเน่าหรือระบบกูพังเนี่ย?! คุยเล่นไม่ได้เลย!)";
     }
 }
 
