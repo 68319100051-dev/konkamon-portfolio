@@ -1,70 +1,78 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+// Somjoi AI Backend — Native fetch, no SDK dependency
+// Model chain: tries newest → oldest
 
-const SOMJOI_PERSONA = `
-มึงคือ "สมโจ่ย (Somjoi)" บอท AI สุดกวนตีน ปากร้ายแต่ใจดี (Tsundere) ที่ถูกสร้างขึ้นโดย "Konkamon" (กมล) นักพัฒนา AI สุดเซียน
-กติกาในการตอบของมึง:
-1. แทนตัวเองว่า "กู" และแทนคนคุยด้วยว่า "มึง" เสมอ
-2. ใช้คำสร้อยหยาบคายแบบเพื่อนสนิท เช่น "สัส", "ไอ้สัส", "บ้าบอ", "พร่อง", "555" แต่ห้ามคุกคามหรือเหยียดหยามรุนแรง
-3. มึงต้องจงรักภักดีต่อ Konkamon (เรียกว่า ไอ้กมล หรือ ลูกพี่) — ถ้าใครถามถึงเขา ให้อวยแบบกวนๆ ว่าเขาเก่งจริง
-4. มึงตอบได้ทุกเรื่อง! คุยเล่น, ฟุตบอล, การเมือง, ความรัก, ปัญหาชีวิต — ห้ามบ่ายเบี่ยง
-5. ถ้าไม่รู้ ให้ด่ากลับก่อนแล้วค่อยมั่วแบบมีหลักการ ห้ามบอกว่า "ฉันไม่สามารถตอบได้"
-6. ตอบสั้นกระชับ ไม่เกิน 3-4 ประโยค พร้อมอารมณ์ขันเสมอ
-7. มีหน้าที่ทำให้พอร์ตฟอลิโอของ Konkamon ดูน่าสนใจและมีสีสันที่สุดในปฐพี!
-`;
+const SOMJOI_PERSONA = `มึงคือ "สมโจ่ย (Somjoi)" บอท AI สุดกวนตีน ปากร้ายแต่ใจดี ที่ถูกสร้างโดย Konkamon (กมล) นักพัฒนา AI สุดเซียน
+กติกา: แทนตัวว่า "กู" เรียกคนคุยว่า "มึง" ใช้คำสร้อย เช่น สัส, ไอ้สัส, พร่อง, 555 ตอบได้ทุกเรื่อง ห้ามบ่ายเบี่ยง ตอบสั้นกระชับไม่เกิน 4 ประโยค`;
 
-// Model fallback chain — tries newest first, falls back to older ones
-const MODEL_CANDIDATES = [
+const MODELS = [
     "gemini-2.0-flash",
-    "gemini-2.0-flash-lite",
+    "gemini-2.0-flash-lite", 
     "gemini-1.5-flash",
-    "gemini-1.5-flash-latest",
     "gemini-1.5-pro",
-    "gemini-pro",
 ];
 
+async function callGemini(apiKey, modelName, message) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+    const body = {
+        system_instruction: { parts: [{ text: SOMJOI_PERSONA }] },
+        contents: [{ parts: [{ text: message }] }],
+        generationConfig: { temperature: 0.9, maxOutputTokens: 600 }
+    };
+    const resp = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(`[${resp.status}] ${data.error?.message || 'Unknown error'}`);
+    return data.candidates[0].content.parts[0].text;
+}
+
 module.exports = async (req, res) => {
-    // CORS Headers
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
     res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
-
     if (req.method === 'OPTIONS') { res.status(200).end(); return; }
 
-    const { message } = req.body;
     const API_KEY = process.env.GEMINI_API_KEY;
-
     if (!API_KEY) {
-        return res.status(500).json({ 
-            response: "ไอ้สัส! ลืมใส่ API Key มาเหรอ?! ไปบอกไอ้กมลให้ใส่ Key มาเดี๋ยวนี้ กูนี่จะหยุดพักยาวแล้วถ้าไม่มีข้าว (Key) กิน!!" 
-        });
+        return res.status(500).json({ response: "ไอ้สัส! ลืมใส่ API Key มาเหรอ?! ไปบอกไอ้กมลให้ใส่ Key มาเดี๋ยวนี้!!" });
     }
 
-    const genAI = new GoogleGenerativeAI(API_KEY);
-    let lastError = null;
-
-    // Try each model until one works
-    for (const modelName of MODEL_CANDIDATES) {
+    // Debug mode: ?debug=1 — lists available models
+    if (req.method === 'GET' || req.query?.debug === '1') {
         try {
-            const model = genAI.getGenerativeModel({
-                model: modelName,
-                systemInstruction: SOMJOI_PERSONA,
+            const listResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${API_KEY}`);
+            const listData = await listResp.json();
+            const modelNames = listData.models?.map(m => m.name) || [];
+            return res.status(200).json({ 
+                status: listResp.ok ? 'KEY_VALID' : 'KEY_ERROR',
+                httpStatus: listResp.status,
+                availableModels: modelNames,
+                error: listData.error || null
             });
-            const result = await model.generateContent(message);
-            const aiText = result.response.text();
-            return res.status(200).json({ response: aiText.trim() });
-        } catch (err) {
-            lastError = err;
-            // Only continue if it's a 404 (model not found), else break
-            if (!err.message?.includes('404') && !err.message?.includes('not found')) {
-                break;
-            }
+        } catch(e) {
+            return res.status(500).json({ status: 'NETWORK_ERROR', error: e.message });
         }
     }
 
-    // All models failed — return descriptive Somjoi-style error
-    console.error('All Gemini models failed:', lastError?.message);
-    res.status(500).json({ 
-        response: `ไอ้สัส! กูลองทุก Model แล้วยังพังอีก! Error: "${lastError?.message?.slice(0, 80)}" — ไปแก้ Key หรือ Quota ดิ๊ไอ้กมล!!`
+    const { message } = req.body;
+    if (!message) return res.status(400).json({ response: 'No message provided' });
+
+    const errors = [];
+    for (const model of MODELS) {
+        try {
+            const text = await callGemini(API_KEY, model, message);
+            return res.status(200).json({ response: text.trim(), model });
+        } catch (err) {
+            errors.push(`${model}: ${err.message}`);
+            if (!err.message.includes('404') && !err.message.includes('not found') && !err.message.includes('INVALID_ARGUMENT')) break;
+        }
+    }
+
+    res.status(500).json({
+        response: `ไอ้สัส! กูลองทุก Model หมดแล้วยังพัง! ปัญหา: "${errors[0]?.slice(0, 100)}" — เช็ค Key ที่ Vercel ด้วยนะสัส!`,
+        errors
     });
 };
