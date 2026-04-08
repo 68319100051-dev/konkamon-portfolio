@@ -1026,3 +1026,133 @@ nav {
     color: white;
     transform: translateY(-2px);
 }
+
+/* ====================== */
+/* 3D Globe Section       */
+/* ====================== */
+.globe-section {
+    padding: 6rem 10%;
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    background: radial-gradient(circle at 70% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 60%);
+    overflow: hidden;
+}
+
+.globe-text {
+    flex: 1;
+    min-width: 260px;
+}
+
+.globe-text h2 {
+    font-size: 2.8rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+}
+
+.globe-text > p {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    margin-bottom: 2.5rem;
+    max-width: 400px;
+}
+
+.globe-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.globe-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    padding: 1rem 1.5rem;
+    border-radius: 16px;
+    backdrop-filter: blur(8px);
+    transition: 0.3s;
+}
+
+.globe-stat-item:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+}
+
+.globe-stat-num {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--accent-color);
+    text-shadow: 0 0 12px var(--accent-glow);
+    min-width: 80px;
+    font-variant-numeric: tabular-nums;
+}
+
+.globe-stat-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.globe-canvas-container {
+    flex: 1.2;
+    height: 500px;
+    position: relative;
+    cursor: grab;
+    min-width: 300px;
+}
+
+.globe-canvas-container:active {
+    cursor: grabbing;
+}
+
+#globe-canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.globe-overlay-label {
+    position: absolute;
+    background: rgba(10, 10, 30, 0.85);
+    border: 1px solid var(--glass-border);
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: white;
+    pointer-events: none;
+    display: none;
+    backdrop-filter: blur(6px);
+}
+
+@media (max-width: 768px) {
+    .globe-section {
+        flex-direction: column;
+        padding: 4rem 5%;
+        gap: 2rem;
+    }
+
+    .globe-text h2 {
+        font-size: 2rem;
+    }
+
+    .globe-canvas-container {
+        width: 100%;
+        height: 320px;
+    }
+
+    .globe-stats {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .globe-stat-item {
+        flex: 1;
+        min-width: 120px;
+        flex-direction: column;
+        text-align: center;
+        padding: 0.8rem 1rem;
+    }
+}

@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;800;900&family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         body, * { font-family: 'Outfit', 'Noto Sans Thai', sans-serif; }
     </style>
@@ -127,6 +128,32 @@
         </section>
     </main>
 
+    <!-- 3D Globe Section -->
+    <section id="globe-section" class="globe-section">
+        <div class="globe-text">
+            <h2>AI Connectivity <span style="color: var(--accent-color)">Worldwide</span></h2>
+            <p>เชื่อมต่อกับระบบ AI และพาร์ทเนอร์ทั่วโลก ด้วยเทคโนโลยีที่ไม่มีพรมแดน</p>
+            <div class="globe-stats">
+                <div class="globe-stat-item">
+                    <span class="globe-stat-num" id="globe-connections">0</span>
+                    <span class="globe-stat-label">Live Connections</span>
+                </div>
+                <div class="globe-stat-item">
+                    <span class="globe-stat-num" id="globe-latency">0ms</span>
+                    <span class="globe-stat-label">Avg Latency</span>
+                </div>
+                <div class="globe-stat-item">
+                    <span class="globe-stat-num" id="globe-uptime">0%</span>
+                    <span class="globe-stat-label">Uptime</span>
+                </div>
+            </div>
+        </div>
+        <div id="globe-canvas-container" class="globe-canvas-container">
+            <canvas id="globe-canvas"></canvas>
+            <div class="globe-overlay-label" id="globe-city-label"></div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
     <section id="contact" class="contact">
         <h2>อยากร่วมงานกับผม?</h2>
@@ -205,5 +232,6 @@
     </div>
 
     <script src="script.js"></script>
+    <script src="globe.js"></script>
 </body>
 </html>
