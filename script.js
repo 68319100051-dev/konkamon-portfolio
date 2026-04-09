@@ -22,19 +22,20 @@ const observer = new IntersectionObserver((entries) => {
 }, observerOptions);
 
 function animateCounter(el) {
-    const target = parseInt(el.getAttribute('data-target'));
-    const duration = 2000; // 2 seconds
-    const start = 0;
-    const increment = target / (duration / 16); // 60fps
-    let current = start;
+    const targetStr = el.getAttribute('data-target');
+    const target = parseFloat(targetStr);
+    const isDecimal = targetStr.includes('.');
+    const duration = 2000;
+    const increment = target / (duration / 16);
+    let current = 0;
 
     const timer = setInterval(() => {
         current += increment;
         if (current >= target) {
-            el.textContent = target;
+            el.textContent = isDecimal ? target.toFixed(2) : target;
             clearInterval(timer);
         } else {
-            el.textContent = Math.floor(current);
+            el.textContent = isDecimal ? current.toFixed(2) : Math.floor(current);
         }
     }, 16);
 }
