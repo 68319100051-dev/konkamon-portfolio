@@ -3,16 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Journey | เส้นทางสาย AI ของ Konkamon</title>
-    <meta name="description" content="ย้อนรอยการเดินทางและหมุดหมายสำคัญในโลกของ AI และการพัฒนาซอฟต์แวร์ของ Konkamon">
+    <title>Journey | Jet Konkamon</title>
+    <meta name="description" content="ย้อนรอยการเดินทางและหมุดหมายสำคัญในโลกของ AI และการพัฒนาซอฟต์แวร์ของ กรกมล พุทธคาวี">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;800;900&family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        body, * { font-family: 'Outfit', 'Noto Sans Thai', sans-serif; }
-        .hero { height: 60vh; min-height: 400px; } /* Slimmer hero for internal pages */
-        .hero h1 { font-size: 3.5rem; }
+        .journey-section { padding: 120px 8% 60px; max-width: 1000px; margin: 0 auto; }
+        .timeline-bento { display: flex; flex-direction: column; gap: 2rem; margin-top: 3rem; position: relative; }
+        .timeline-bento::before {
+            content: ''; position: absolute; left: 20px; top: 0; bottom: 0; width: 2px;
+            background: linear-gradient(to bottom, var(--accent-color), transparent); opacity: 0.3;
+        }
+        .t-card { margin-left: 50px; }
+        .t-card .date { color: var(--accent-color); font-weight: 800; font-size: 0.85rem; text-transform: uppercase; margin-bottom: 0.5rem; display: block; }
     </style>
 </head>
 <body>
@@ -20,10 +25,6 @@
     
     <nav>
         <div class="logo">Konkamon.</div>
-        <div class="live-status">
-            <span class="pulse-dot"></span>
-            <span class="status-text">Current: Building AI Agents</span>
-        </div>
         <div class="nav-links" id="nav-links">
             <a href="index.html" data-i18n="nav-home">หน้าหลัก</a>
             <a href="journey.html" class="active" data-i18n="nav-journey">เส้นทาง AI</a>
@@ -34,137 +35,94 @@
             <button id="lang-toggle" onclick="toggleLanguage()">EN</button>
         </div>
         <div class="menu-toggle" id="menu-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
         </div>
     </nav>
 
-    <main>
-        <!-- Hero Section -->
-        <section id="hero" class="hero">
+    <main class="journey-section">
+        <header class="bento-card hero-card" style="grid-column: span 1; padding: 4rem 2.5rem; text-align: center;">
             <h1 data-i18n="journey-hero-title">การเดินทางของ <br> <span style="color: var(--accent-color)">AI Developer</span>.</h1>
-            <p data-i18n="journey-hero-subtitle">รวมหมุดหมายสำคัญตั้งแต่จุดเริ่มต้นจนถึงปัจจุบัน ในโลกของการพัฒนา AI และเทคโนโลยีสมัยใหม่</p>
-        </section>
+            <p data-i18n="journey-hero-subtitle" style="margin: 1.5rem auto 0; max-width: 600px;">รวมหมุดหมายสำคัญตั้งแต่จุดเริ่มต้นจนถึงปัจจุบัน ในโลกของการพัฒนา AI และเทคโนโลยีสมัยใหม่</p>
+        </header>
 
-        <!-- AI Journey Timeline -->
-        <section id="journey" class="journey">
-            <div class="timeline">
-                <div class="timeline-line"></div>
-                
-                <div class="timeline-item left">
-                    <div class="timeline-node"></div>
-                    <div class="timeline-content">
-                        <span class="date">2023</span>
-                        <h3 data-i18n="j1-title">จุดเริ่มต้นและความหลงใหล</h3>
-                        <p data-i18n="j1-desc">เริ่มศึกษาการเขียนโปรแกรมและการสร้างระบบอัตโนมัติ (Automation) พร้อมกับติดตามความก้าวหน้าของ LLMs อย่างใกล้ชิด</p>
-                    </div>
-                </div>
-
-                <div class="timeline-item right">
-                    <div class="timeline-node"></div>
-                    <div class="timeline-content">
-                        <span class="date">Early 2024</span>
-                        <h3 data-i18n="j2-title">ก้าวไกลไปกับ PWA (Jet Music)</h3>
-                        <p data-i18n="j2-desc">พัฒนาโปรเจ็กต์ Jet Music เพื่อเรียนรู้การจัดการข้อมูลออฟไลน์และ User Experience ในระดับสูง</p>
-                    </div>
-                </div>
-
-                <div class="timeline-item left">
-                    <div class="timeline-node"></div>
-                    <div class="timeline-content">
-                        <span class="date">Mid 2024</span>
-                        <h3 data-i18n="j3-title">ก้าวเข้าสู่โลกของ AI Integration</h3>
-                        <p data-i18n="j3-desc">เชี่ยวชาญการใช้ Gemini API และ Groq เพื่อสร้างแอปพลิเคชันที่ฉลาดและรวดเร็วในระดับวินาที</p>
-                    </div>
-                </div>
-
-                <div class="timeline-item right">
-                    <div class="timeline-node"></div>
-                    <div class="timeline-content">
-                        <span class="date">Late 2024</span>
-                        <h3 data-i18n="j4-title">นวัตกรรมแก้ปัญหาจริง (Form Filler)</h3>
-                        <p data-i18n="j4-desc">สร้าง AI Google Form Filler เพื่อพิสูจน์ว่า AI สามารถช่วยลดขั้นตอนการทำงานซ้ำๆ ได้อย่างมีประสิทธิภาพ</p>
-                    </div>
-                </div>
-
-                <div class="timeline-item left">
-                    <div class="timeline-node"></div>
-                    <div class="timeline-content">
-                        <span class="date">2025 & Beyond</span>
-                        <h3 data-i18n="j5-title">อนาคตของ AI Agents</h3>
-                        <p data-i18n="j5-desc">มุ่งเน้นการวิจัยและพัฒนา Autonomous Agents ที่สามารถทำงานแทนมนุษย์ในระบบที่ซับซ้อนได้</p>
-                    </div>
-                </div>
+        <div class="timeline-bento">
+            <!-- 2023 -->
+            <div class="bento-card t-card">
+                <span class="date">2023</span>
+                <h3 data-i18n="j1-title">จุดเริ่มต้นและความหลงใหล</h3>
+                <p data-i18n="j1-desc">เริ่มศึกษาการเขียนโปรแกรมและการสร้างระบบอัตโนมัติ (Automation) พร้อมกับติดตามความก้าวหน้าของ LLMs อย่างใกล้ชิด</p>
             </div>
-        </section>
 
-        <!-- GitHub Style Heatmap Section -->
-        <section id="heatmap-section" class="heatmap-section">
-            <h2>Activity & Contributions</h2>
-            <div id="heatmap-container" class="heatmap-container">
-                <!-- Grid will be generated via JS -->
+            <!-- Early 2024 -->
+            <div class="bento-card t-card">
+                <span class="date">Early 2024</span>
+                <h3 data-i18n="j2-title">ก้าวไกลไปกับ PWA (Jet Music)</h3>
+                <p data-i18n="j2-desc">พัฒนาโปรเจ็กต์ Jet Music เพื่อเรียนรู้การจัดการข้อมูลออฟไลน์และ User Experience ในระดับสูง</p>
             </div>
-            <div class="heatmap-legend">
+
+            <!-- Mid 2024 -->
+            <div class="bento-card t-card" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), transparent);">
+                <span class="date">Mid 2024</span>
+                <h3 data-i18n="j3-title">ก้าวเข้าสู่โลกของ AI Integration</h3>
+                <p data-i18n="j3-desc">เชี่ยวชาญการใช้ Gemini API และ Groq เพื่อสร้างแอปพลิเคชันที่ฉลาดและรวดเร็วในระดับวินาที</p>
+            </div>
+
+            <!-- Late 2024 -->
+            <div class="bento-card t-card">
+                <span class="date">Late 2024</span>
+                <h3 data-i18n="j4-title">นวัตกรรมแก้ปัญหาจริง (Form Filler)</h3>
+                <p data-i18n="j4-desc">สร้าง AI Google Form Filler เพื่อพิสูจน์ว่า AI สามารถช่วยลดขั้นตอนการทำงานซ้ำๆ ได้อย่างมีประสิทธิภาพ</p>
+            </div>
+
+            <!-- 2025 -->
+            <div class="bento-card t-card" style="border-color: var(--accent-color);">
+                <span class="date">2025 & Beyond</span>
+                <h3 data-i18n="j5-title">อนาคตของ AI Agents</h3>
+                <p data-i18n="j5-desc">มุ่งเน้นการวิจัยและพัฒนา Autonomous Agents ที่สามารถทำงานแทนมนุษย์ในระบบที่ซับซ้อนได้</p>
+            </div>
+        </div>
+
+        <!-- Heatmap Section Integrated as a Bento Card -->
+        <section id="heatmap-section" class="bento-card" style="margin-top: 3rem; padding: 2.5rem;">
+            <h3 style="margin-bottom: 2rem;">Activity & Contributions</h3>
+            <div id="heatmap-container" class="heatmap-container" style="display: grid; grid-template-columns: repeat(52, 1fr); gap: 4px; overflow-x: auto; padding-bottom: 1rem;">
+                <!-- Generated via JS -->
+            </div>
+            <div class="heatmap-legend" style="display: flex; align-items: center; gap: 10px; margin-top: 1rem; font-size: 0.8rem; color: var(--text-secondary);">
                 <span>Less</span>
-                <div class="legend-cells">
-                    <div class="cell level-0"></div>
-                    <div class="cell level-1"></div>
-                    <div class="cell level-2"></div>
-                    <div class="cell level-3"></div>
+                <div style="display: flex; gap: 4px;">
+                    <div class="cell level-0" style="width:10px; height:10px; background:#1a1a2e; border-radius:2px;"></div>
+                    <div class="cell level-1" style="width:10px; height:10px; background:#312e81; border-radius:2px;"></div>
+                    <div class="cell level-2" style="width:10px; height:10px; background:#4338ca; border-radius:2px;"></div>
+                    <div class="cell level-3" style="width:10px; height:10px; background:#6366f1; border-radius:2px;"></div>
                 </div>
                 <span>More</span>
             </div>
         </section>
     </main>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <h2>อยากร่วมงานกับผม?</h2>
-        <p>คุณสามารถติดต่อพูดคุยเรื่องโปรเจ็กต์ หรือแลกเปลี่ยนความรู้ได้ที่ช่องทางเหล่านี้</p>
-        <div class="contact-links">
-            <a href="mailto:konkamon@example.com" class="contact-btn">
-                <span>📧</span> อีเมลหาผม
-            </a>
-            <a href="https://github.com/konkamonp" target="_blank" class="contact-btn">
-                <span>Github</span>
-            </a>
-            <a href="#" class="contact-btn" onclick="copyEmail(event)">
-                <span>คัดลอกอีเมล</span>
-            </a>
-        </div>
-        <div id="copy-toast" class="toast">คัดลอกอีเมลเรียบร้อยแล้ว!</div>
-    </section>
-
-    <footer style="padding: 3rem 10%; text-align: center; border-top: 1px solid var(--glass-border); background: #050505;">
-        <p style="color: var(--text-secondary); opacity: 0.6;">&copy; 2026 Konkamon. สร้างด้วยความตั้งใจ</p>
+    <footer style="padding: 4rem 8%; text-align: center; border-top: 1px solid var(--glass-border); margin-top: 4rem;">
+        <p style="color: var(--text-secondary); opacity: 0.6;">&copy; 2026 Konkamon. Built with Passion & AI.</p>
     </footer>
 
-    <canvas id="particle-canvas"></canvas>
-    <div id="cursor-glow"></div>
-
-    <!-- AI Assistant -->
-    <div id="ai-chat-bubble" class="ai-bubble" onclick="toggleChat()">
-        <span class="ai-icon">🤖</span>
-    </div>
-
-    <div id="ai-chat-window" class="chat-window">
-        <div class="chat-header">
-            <h4>Konkamon AI Assistant</h4>
-            <span class="close-chat" onclick="toggleChat()">&times;</span>
-        </div>
-        <div id="chat-messages" class="chat-messages">
-            <div class="message ai-message">สวัสดีครับ! ยินดีที่พบกันในหน้า Journey ครับ มีข้อมูลส่วนไหนที่อยากทราบเพิ่มไหม?</div>
-        </div>
-        <div id="chat-suggestions" class="chat-suggestions">
-            <!-- Suggestions will be injected by JS -->
-        </div>
-        <div class="chat-input-area">
-            <input type="text" id="user-input" placeholder="พิมพ์ข้อความ..." onkeypress="handleChatKey(event)">
-            <button onclick="sendChatMessage()">🚀</button>
-        </div>
-    </div>
-
     <script src="script.js"></script>
+    <script>
+        // Heatmap generation for journey page
+        function generateJourneyHeatmap() {
+            const container = document.getElementById('heatmap-container');
+            if(!container) return;
+            for(let i=0; i<364; i++) {
+                const cell = document.createElement('div');
+                const level = Math.floor(Math.random() * 4);
+                cell.className = `heatmap-cell level-${level}`;
+                cell.style.width = '10px';
+                cell.style.height = '10px';
+                cell.style.borderRadius = '2px';
+                cell.style.background = level === 0 ? '#1a1a2e' : (level === 1 ? '#312e81' : (level === 2 ? '#4338ca' : '#6366f1'));
+                container.appendChild(cell);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', generateJourneyHeatmap);
+    </script>
 </body>
 </html>
