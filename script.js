@@ -43,7 +43,7 @@ function animateCounter(el) {
 // Global initialization
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Scroll Animations & Counters
-    const animatableElements = document.querySelectorAll(".project-card, .projects h2, .skills h2, .skill-item, .contact h2, .timeline-item, .journey h2, .counter");
+    const animatableElements = document.querySelectorAll(".project-card, .projects h2, .skills h2, .skill-item, .contact h2, .timeline-item, .journey h2, .counter, .bento-card");
     animatableElements.forEach(el => {
         if (el) {
             if (!el.classList.contains('counter')) {

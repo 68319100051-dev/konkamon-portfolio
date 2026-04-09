@@ -40,82 +40,59 @@
     </nav>
 
     <main>
-        <!-- Hero Section -->
-        <section id="hero" class="hero">
-            <h1 data-i18n="hero-title">กรกมล พุทธคาวี <br> <span style="color: var(--accent-color)">Jet Konkamon</span>.</h1>
-            <p data-i18n="hero-subtitle">นักพัฒนา AI และผู้เชี่ยวชาญด้านสื่อมัลติมีเดีย จากวิทยาลัยอาชีวศึกษาฉะเชิงเทรา มุ่งสร้างนวัตกรรมที่เปลี่ยนโลกด้วย Code และ Design</p>
-            <div class="hero-btns">
-                <a href="#projects" class="btn btn-primary" data-i18n="hero-btn">ดูผลงานทั้งหมด</a>
-            </div>
-        </section>
+        <!-- Bento Grid Section (Hero + Stats + Terminal + Skills) -->
+        <section class="bento-section">
+            <div class="bento-grid">
+                <!-- Main Intro Card -->
+                <div class="bento-card hero-card">
+                    <h1 data-i18n="hero-title">กรกมล พุทธคาวี <br> <span style="color: var(--accent-color)">Jet Konkamon</span>.</h1>
+                    <p data-i18n="hero-subtitle">นักพัฒนา AI และผู้เชี่ยวชาญด้านสื่อมัลติมีเดีย มุ่งสร้างนวัตกรรมที่เปลี่ยนโลกด้วย Code และ Design</p>
+                    <div class="hero-btns">
+                        <a href="#projects" class="btn btn-primary" data-i18n="hero-btn">ดูผลงานทั้งหมด</a>
+                    </div>
+                </div>
 
-        <!-- Stats Section -->
-        <section id="stats" class="stats">
-            <div class="stat-item">
-                <h2 class="counter" data-target="3.84">0</h2>
-                <p data-i18n="stat-gpa">GPA (ปวส.)</p>
-            </div>
-            <div class="stat-item">
-                <h2 class="counter" data-target="1">0</h2>
-                <p data-i18n="stat-award">Gold Medal Award</p>
-            </div>
-            <div class="stat-item">
-                <h2 class="counter" data-target="5">0</h2>
-                <p data-i18n="stat-projects">Key Projects</p>
-            </div>
-            <div class="stat-item">
-                <h2 class="counter" data-target="100">0</h2>
-                <p data-i18n="stat-dedication">% Dedication</p>
-            </div>
-        </section>
-        
-        <!-- AI Terminal Logs Section -->
-        <section id="ai-logs" class="ai-logs">
-            <div class="terminal-window">
-                <div class="terminal-header">
-                    <div class="terminal-btns">
-                        <span class="t-btn close"></span>
-                        <span class="t-btn min"></span>
-                        <span class="t-btn max"></span>
-                    </div>
-                    <div class="terminal-title" data-i18n="terminal-title">System Activity Log</div>
-                </div>
-                <div class="terminal-body" id="log-container">
-                    <div class="log-line">
-                        <span class="log-time">[08:45:12]</span>
-                        <span class="log-info">INFO:</span> Initializing AI Core...
-                    </div>
-                    <div class="log-line">
-                        <span class="log-time">[08:45:14]</span>
-                        <span class="log-success">SUCCESS:</span> Neural networks linked.
+                <!-- Stats Card -->
+                <div class="bento-card stats-card">
+                    <div class="mini-stats">
+                        <div class="m-stat">
+                            <span class="counter" data-target="3.84">0</span>
+                            <small data-i18n="stat-gpa">GPA</small>
+                        </div>
+                        <div class="m-stat">
+                            <span class="counter" data-target="1">0</span>
+                            <small data-i18n="stat-award">Gold Medal</small>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- Skills Section -->
-        <section id="skills" class="skills">
-            <h2 data-i18n="skills-title">ทักษะและความเชี่ยวชาญ</h2>
-            <div class="skills-grid">
-                <div class="skill-item">
-                    <span class="skill-icon">🚀</span>
-                    <h4>Frontend</h4>
-                    <p data-i18n="skill-desc-1">Next.js, React, Tailwind, PWA</p>
+                <!-- AI Terminal Card -->
+                <div class="bento-card terminal-card">
+                    <div class="terminal-header">
+                        <div class="terminal-btns">
+                            <span class="t-btn close"></span>
+                            <span class="t-btn min"></span>
+                            <span class="t-btn max"></span>
+                        </div>
+                        <div class="terminal-title" data-i18n="terminal-title">System Activity Log</div>
+                    </div>
+                    <div class="terminal-body" id="log-container">
+                        <div class="log-line">
+                            <span class="log-time">[08:45:12]</span>
+                            <span class="log-info">INFO:</span> Initializing AI Core...
+                        </div>
+                    </div>
                 </div>
-                <div class="skill-item">
-                    <span class="skill-icon">🧠</span>
-                    <h4>AI Integration</h4>
-                    <p data-i18n="skill-desc-2">Gemini, Groq, OpenRouter, LLMs</p>
-                </div>
-                <div class="skill-item">
-                    <span class="skill-icon">⚙️</span>
-                    <h4>Backend & Automation</h4>
-                    <p data-i18n="skill-desc-3">Python, Flask, Playwright, Node.js</p>
-                </div>
-                <div class="skill-item">
-                    <span class="skill-icon">📦</span>
-                    <h4>Tools</h4>
-                    <p data-i18n="skill-desc-4">Git, Docker, Vercel, Render</p>
+
+                <!-- Skills Card -->
+                <div class="bento-card skills-card">
+                    <h4 data-i18n="skills-title">ทักษะ</h4>
+                    <div class="skill-chips">
+                        <span class="chip">Next.js</span>
+                        <span class="chip">AI Engine</span>
+                        <span class="chip">Python</span>
+                        <span class="chip">Motion</span>
+                    </div>
                 </div>
             </div>
         </section>
