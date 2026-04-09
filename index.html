@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Konkamon | นักพัฒนา AI & ผู้เชี่ยวชาญด้านระบบ</title>
-    <meta name="description" content="พอร์ตฟอลิโอของ Konkamon นำเสนอ Jet Music และ AI Google Form Auto-Filler">
+    <title>Jet Konkamon | AI Developer & Multimedia Specialist</title>
+    <meta name="description" content="พอร์ตฟอลิโอของ กรกมล พุทธคาวี (เจ็ท) - ผู้เชี่ยวชาญด้าน AI และสื่อมัลติมีเดีย">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;800;900&family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet">
@@ -24,10 +24,13 @@
             <span class="status-text">Current: Building AI Agents</span>
         </div>
         <div class="nav-links" id="nav-links">
-            <a href="index.html" class="active">หน้าหลัก</a>
-            <a href="journey.html">เส้นทาง AI</a>
-            <a href="index.html#projects">โปรเจ็กต์</a>
-            <a href="index.html#contact">ติดต่อ</a>
+            <a href="index.html" class="active" data-i18n="nav-home">หน้าหลัก</a>
+            <a href="journey.html" data-i18n="nav-journey">เส้นทาง AI</a>
+            <a href="index.html#projects" data-i18n="nav-projects">โปรเจ็กต์</a>
+            <a href="index.html#contact" data-i18n="nav-contact">ติดต่อ</a>
+        </div>
+        <div class="lang-switch">
+            <button id="lang-toggle" onclick="toggleLanguage()">EN</button>
         </div>
         <div class="menu-toggle" id="menu-toggle">
             <span></span>
@@ -39,70 +42,94 @@
     <main>
         <!-- Hero Section -->
         <section id="hero" class="hero">
-            <h1>สร้างอนาคต <br> ด้วย <span style="color: var(--accent-color)">AI & Code</span>.</h1>
-            <p>ผมเชี่ยวชาญในการสร้างแอปพลิเคชันอัจฉริยะและประสบการณ์ดิจิทัลที่ลื่นไหล มุ่งเน้นการนำ AI มาเพิ่มประสิทธิภาพในการทำงาน</p>
+            <h1 data-i18n="hero-title">กรกมล พุทธคาวี <br> <span style="color: var(--accent-color)">Jet Konkamon</span>.</h1>
+            <p data-i18n="hero-subtitle">นักพัฒนา AI และผู้เชี่ยวชาญด้านสื่อมัลติมีเดีย จากวิทยาลัยอาชีวศึกษาฉะเชิงเทรา มุ่งสร้างนวัตกรรมที่เปลี่ยนโลกด้วย Code และ Design</p>
             <div class="hero-btns">
-                <a href="#projects" class="btn btn-primary">ดูโปรเจ็กต์ทั้งหมด</a>
+                <a href="#projects" class="btn btn-primary" data-i18n="hero-btn">ดูผลงานทั้งหมด</a>
             </div>
         </section>
 
         <!-- Stats Section -->
         <section id="stats" class="stats">
             <div class="stat-item">
-                <h2 class="counter" data-target="2">0</h2>
-                <p>Main Projects</p>
+                <h2 class="counter" data-target="3.84">0</h2>
+                <p data-i18n="stat-gpa">GPA (ปวส.)</p>
             </div>
             <div class="stat-item">
-                <h2 class="counter" data-target="15">0</h2>
-                <p>AIS Tools Layered</p>
+                <h2 class="counter" data-target="1">0</h2>
+                <p data-i18n="stat-award">Gold Medal Award</p>
             </div>
             <div class="stat-item">
-                <h2 class="counter" data-target="50">0</h2>
-                <p>Automation Hours/Mo</p>
+                <h2 class="counter" data-target="5">0</h2>
+                <p data-i18n="stat-projects">Key Projects</p>
             </div>
             <div class="stat-item">
-                <h2 class="counter" data-target="99">0</h2>
-                <p>% Code Accuracy</p>
+                <h2 class="counter" data-target="100">0</h2>
+                <p data-i18n="stat-dedication">% Dedication</p>
+            </div>
+        </section>
+        
+        <!-- AI Terminal Logs Section -->
+        <section id="ai-logs" class="ai-logs">
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <div class="terminal-btns">
+                        <span class="t-btn close"></span>
+                        <span class="t-btn min"></span>
+                        <span class="t-btn max"></span>
+                    </div>
+                    <div class="terminal-title" data-i18n="terminal-title">System Activity Log</div>
+                </div>
+                <div class="terminal-body" id="log-container">
+                    <div class="log-line">
+                        <span class="log-time">[08:45:12]</span>
+                        <span class="log-info">INFO:</span> Initializing AI Core...
+                    </div>
+                    <div class="log-line">
+                        <span class="log-time">[08:45:14]</span>
+                        <span class="log-success">SUCCESS:</span> Neural networks linked.
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- Skills Section -->
         <section id="skills" class="skills">
-            <h2>ทักษะและความเชี่ยวชาญ</h2>
+            <h2 data-i18n="skills-title">ทักษะและความเชี่ยวชาญ</h2>
             <div class="skills-grid">
                 <div class="skill-item">
                     <span class="skill-icon">🚀</span>
                     <h4>Frontend</h4>
-                    <p>Next.js, React, Tailwind, PWA</p>
+                    <p data-i18n="skill-desc-1">Next.js, React, Tailwind, PWA</p>
                 </div>
                 <div class="skill-item">
                     <span class="skill-icon">🧠</span>
                     <h4>AI Integration</h4>
-                    <p>Gemini, Groq, OpenRouter, LLMs</p>
+                    <p data-i18n="skill-desc-2">Gemini, Groq, OpenRouter, LLMs</p>
                 </div>
                 <div class="skill-item">
                     <span class="skill-icon">⚙️</span>
                     <h4>Backend & Automation</h4>
-                    <p>Python, Flask, Playwright, Node.js</p>
+                    <p data-i18n="skill-desc-3">Python, Flask, Playwright, Node.js</p>
                 </div>
                 <div class="skill-item">
                     <span class="skill-icon">📦</span>
                     <h4>Tools</h4>
-                    <p>Git, Docker, Vercel, Render</p>
+                    <p data-i18n="skill-desc-4">Git, Docker, Vercel, Render</p>
                 </div>
             </div>
         </section>
 
         <!-- Projects Section -->
         <section id="projects" class="projects">
-            <h2>โปรเจ็กต์ที่น่าสนใจ</h2>
+            <h2 data-i18n="projects-title">โปรเจ็กต์ที่น่าสนใจ</h2>
             <div class="project-grid">
                 <!-- Jet Music -->
                 <div class="project-card" onclick="openModal('jet-music')">
                     <img src="jet_music_preview.png" alt="Jet Music App Preview" class="project-image">
                     <div class="project-content">
-                        <h3>Jet Music</h3>
-                        <p>แอปพลิเคชันเพลงแบบ PWA ที่มาพร้อมระบบซิงค์เนื้อเพลงอัตโนมัติ และสตรีมเสียงคุณภาพสูงจากหลายแหล่งข้อมูล</p>
+                        <h3 data-i18n="p1-title">Jet Music</h3>
+                        <p data-i18n="p1-desc">แอปพลิเคชันเพลงแบบ PWA ที่มาพร้อมระบบซิงค์เนื้อเพลงอัตโนมัติ และสตรีมเสียงคุณภาพสูงจากหลายแหล่งข้อมูล</p>
                         <div class="tags">
                             <span class="tag">PWA</span>
                             <span class="tag">Next.js</span>
@@ -111,18 +138,40 @@
                     </div>
                 </div>
 
-                <!-- AI Form Filler -->
-                <div class="project-card" onclick="openModal('form-filler')">
-                    <img src="google_form_filler_preview.png" alt="AI Google Form Filler Preview" class="project-image">
+                <!-- PR Media Development -->
+                <div class="project-card" onclick="openModal('motion-graphics')">
+                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop" alt="Motion Graphics Award" class="project-image">
                     <div class="project-content">
-                        <h3>AI Google Form Filler</h3>
-                        <p>เครื่องมืออัตโนมัติอัจฉริยะที่ใช้ Gemini และ Groq เพื่อวิเคราะห์และกรอกข้อมูลลงใน Google Forms อย่างแม่นยำ</p>
+                        <h3 data-i18n="p3-title">PR Media Motion Graphics</h3>
+                        <p data-i18n="p3-desc">รางวัลชนะเลิศเหรียญทอง การประกวดสื่อประชาสัมพันธ์ระดับจังหวัด ประจำปี 2566</p>
                         <div class="tags">
-                            <span class="tag">Python</span>
-                            <span class="tag">AI Engine</span>
-                            <span class="tag">Playwright</span>
+                            <span class="tag">After Effects</span>
+                            <span class="tag">Premiere Pro</span>
+                            <span class="tag" data-i18n="tag-award">Gold Medal</span>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Achievements & Certificates -->
+        <section id="achievements" class="achievements">
+            <h2 data-i18n="achiev-title">ความสำเร็จและเกียรติบัตร</h2>
+            <div class="achiev-grid">
+                <div class="achiev-card">
+                    <div class="achiev-icon">🏆</div>
+                    <h4 data-i18n="ac-1-title">เหรียญทองสื่อประชาสัมพันธ์</h4>
+                    <p data-i18n="ac-1-desc">รางวัลชนะเลิศอันดับ 1 ระดับจังหวัด ปี 2566</p>
+                </div>
+                <div class="achiev-card">
+                    <div class="achiev-icon">📜</div>
+                    <h4 data-i18n="ac-2-title">Microsoft Professional</h4>
+                    <p data-i18n="ac-2-desc">Competency in Word, Excel, PPT (Intermediate)</p>
+                </div>
+                <div class="achiev-card">
+                    <div class="achiev-icon">🎨</div>
+                    <h4 data-i18n="ac-3-title">Logo Design Competition</h4>
+                    <p data-i18n="ac-3-desc">ผู้เข้าร่วมการแข่งขันออกแบบโลโก้ ประจำภาคเรียนที่ 2/2567</p>
                 </div>
             </div>
         </section>
@@ -156,20 +205,20 @@
 
     <!-- Contact Section -->
     <section id="contact" class="contact">
-        <h2>อยากร่วมงานกับผม?</h2>
-        <p>คุณสามารถติดต่อพูดคุยเรื่องโปรเจ็กต์ หรือแลกเปลี่ยนความรู้ได้ที่ช่องทางเหล่านี้</p>
+        <h2 data-i18n="contact-title">อยากร่วมงานกับผม?</h2>
+        <p data-i18n="contact-subtitle">คุณสามารถติดต่อพูดคุยเรื่องโปรเจ็กต์ หรือแลกเปลี่ยนความรู้ได้ที่ช่องทางเหล่านี้</p>
         <div class="contact-links">
-            <a href="mailto:konkamon@example.com" class="contact-btn">
-                <span>📧</span> อีเมลหาผม
+            <a href="mailto:Komkamontv@gmail.com" class="contact-btn">
+                <span>📧</span> <span data-i18n="contact-email">อีเมลหาผม</span>
             </a>
             <a href="https://github.com/konkamonp" target="_blank" class="contact-btn">
                 <span>Github</span>
             </a>
-            <a href="#" class="contact-btn" onclick="copyEmail(event)">
-                <span>คัดลอกอีเมล</span>
+            <a href="tel:0990294518" class="contact-btn">
+                <span>📞</span> 099-029-4518
             </a>
         </div>
-        <div id="copy-toast" class="toast">คัดลอกอีเมลเรียบร้อยแล้ว!</div>
+        <div id="copy-toast" class="toast" data-i18n="contact-toast">คัดลอกอีเมลเรียบร้อยแล้ว!</div>
     </section>
 
     <footer style="padding: 3rem 10%; text-align: center; border-top: 1px solid var(--glass-border); background: #050505;">

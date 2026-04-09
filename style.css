@@ -1156,3 +1156,166 @@ nav {
         padding: 0.8rem 1rem;
     }
 }
+
+/* Achievements Section */
+.achievements {
+    padding: 6rem 10%;
+    text-align: center;
+    background: radial-gradient(circle at 50% 10%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
+}
+
+.achievements h2 {
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+}
+
+.achiev-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.achiev-card {
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    padding: 3rem 2rem;
+    border-radius: 24px;
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.achiev-card:hover {
+    transform: translateY(-10px) scale(1.05);
+    border-color: var(--accent-color);
+    box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
+}
+
+.achiev-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    display: block;
+}
+
+.achiev-card h4 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.achiev-card p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .achievements { padding: 4rem 5%; }
+}
+
+
+/* AI Terminal Section */
+.ai-logs {
+    padding: 2rem 10% 6rem;
+    display: grid;
+    place-items: center;
+}
+
+.terminal-window {
+    width: 100%;
+    max-width: 900px;
+    background: #0d1117;
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    animation: fadeInUp 1s ease-out;
+}
+
+.terminal-header {
+    background: #161b22;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.terminal-btns {
+    display: flex;
+    gap: 8px;
+    margin-right: 15px;
+}
+
+.t-btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.t-btn.close { background: #ff5f56; }
+.t-btn.min { background: #ffbd2e; }
+.t-btn.max { background: #27c93f; }
+
+.terminal-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+}
+
+.terminal-body {
+    padding: 20px;
+    height: 250px;
+    overflow-y: auto;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    background: #0d1117;
+}
+
+.log-line {
+    margin-bottom: 8px;
+    color: #e6edf3;
+    animation: fadeInLog 0.3s ease-in;
+}
+
+.log-time { color: #8b949e; margin-right: 10px; }
+.log-info { color: #58a6ff; font-weight: bold; }
+.log-success { color: #3fb950; font-weight: bold; }
+.log-warn { color: #d29922; font-weight: bold; }
+
+@keyframes fadeInLog {
+    from { opacity: 0; transform: translateX(-5px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Language Switcher */
+.lang-switch {
+    margin: 0 1rem;
+}
+
+#lang-toggle {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    padding: 5px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.8rem;
+    transition: 0.3s;
+}
+
+#lang-toggle:hover {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+/* Mobile Adjustments for terminal */
+@media (max-width: 768px) {
+    .ai-logs { padding: 1rem 5% 4rem; }
+    .terminal-body { height: 200px; font-size: 0.75rem; }
+}
+

@@ -425,3 +425,179 @@ window.sendChatMessage = sendChatMessage;
 window.handleChatKey = handleChatKey;
 window.openModal = openModal;
 window.closeModal = closeModal;
+
+// --- New Features: Language Support & AI Terminal ---
+
+const translations = {
+    'th': {
+        'nav-home': 'หน้าหลัก',
+        'nav-journey': 'เส้นทาง AI',
+        'nav-projects': 'ผลงาน',
+        'nav-contact': 'ติดต่อ',
+        'terminal-title': 'บันทึกกิจกรรมระบบ (System Log)',
+        'hero-title': 'กรกมล พุทธคาวี <br> <span style="color: var(--accent-color)">Jet Konkamon</span>.',
+        'hero-subtitle': 'นักพัฒนา AI และผู้เชี่ยวชาญด้านสื่อมัลติมีเดีย จากวิทยาลัยอาชีวศึกษาฉะเชิงเทรา มุ่งสร้างนวัตกรรมที่เปลี่ยนโลกด้วย Code และ Design',
+        'hero-btn': 'ดูผลงานทั้งหมด',
+        'stat-gpa': 'เกรดเฉลี่ย (ปวส.)',
+        'stat-award': 'รางวัลเหรียญทอง',
+        'stat-projects': 'โปรเจ็กต์หลัก',
+        'stat-dedication': '% ความทุ่มเท',
+        'skills-title': 'ทักษะและความเชี่ยวชาญ',
+        'skill-desc-1': 'Next.js, React, Tailwind, PWA',
+        'skill-desc-2': 'Gemini, Groq, OpenRouter, LLMs',
+        'skill-desc-3': 'Adobe After Effects, Premiere Pro, Illustrator',
+        'skill-desc-4': 'Python, Playwright, Node.js, Git',
+        'projects-title': 'ผลงานที่น่าสนใจ',
+        'p1-title': 'Jet Music',
+        'p1-desc': 'แอปพลิเคชันเพลงแบบ PWA ที่มาพร้อมระบบซิงค์เนื้อเพลงอัตโนมัติ และสตรีมเสียงคุณภาพสูง',
+        'p2-title': 'AI Google Form Filler',
+        'p2-desc': 'เครื่องมืออัตโนมัติที่ใช้ Gemini AI เพื่อวิเคราะห์และกรอกข้อมูลลงใน Google Forms อย่างแม่นยำ',
+        'p3-title': 'PR Media Motion Graphics',
+        'p3-desc': 'รางวัลชนะเลิศเหรียญทอง การประกวดสื่อประชาสัมพันธ์ระดับจังหวัด ประจำปี 2566',
+        'tag-award': 'รางวัลเหรียญทอง',
+        'achiev-title': 'ความสำเร็จและเกียรติบัตร',
+        'ac-1-title': 'เหรียญทองสื่อประชาสัมพันธ์',
+        'ac-1-desc': 'รางวัลชนะเลิศอันดับ 1 ระดับจังหวัด ปี 2566',
+        'ac-2-title': 'Microsoft Professional',
+        'ac-2-desc': 'ความเชี่ยวชาญด้าน Word, Excel, PPT (Intermediate)',
+        'ac-3-title': 'Logo Design Competition',
+        'ac-3-desc': 'ผู้เข้าร่วมการแข่งขันออกแบบโลโก้ ประจำภาคเรียนที่ 2/2567',
+        'contact-title': 'สนใจร่วมงานกับผม?',
+        'contact-subtitle': 'คุณสามารถติดต่อพูดคุยเรื่องโปรเจ็กต์ หรือแลกเปลี่ยนความรู้ได้ที่ช่องทางเหล่านี้',
+        'contact-email': 'ส่งอีเมลหาผม',
+        'contact-toast': 'คัดลอกอีเมลเรียบร้อยแล้ว!',
+        'journey-hero-title': 'เส้นทางของ <br> <span style="color: var(--accent-color)">Jet Konkamon</span>.',
+        'journey-hero-subtitle': 'จากความหลงใหลในเทคโนโลยี สู่การเป็นนักพัฒนาที่ขับเคลื่อนด้วย AI และความคิดสร้างสรรค์',
+        'j1-title': 'ปวช. เทคโนโลยีธุรกิจดิจิทัล',
+        'j1-desc': 'สำเร็จการศึกษาด้วยเกรดเฉลี่ย 3.40 และเป็นตัวแทนแข่งขันในทักษะต่างๆ ของระดับวิทยาลัย',
+        'j2-title': 'เข้าสู่โลกของ AI & Motion',
+        'j2-desc': 'เริ่มศึกษา AI Integration และคว้าเหรียญทองอันดับ 1 ในการประกวดสื่อประชาสัมพันธ์ระดับจังหวัด',
+        'j3-title': 'ปวส. เทคโนโลยีธุรกิจดิจิทัล',
+        'j3-desc': 'รักษาเกรดเฉลี่ยที่ 3.84 และได้รับความไว้วางใจให้ดำรงตำแหน่งรองประธานชมรมวิชาชีพ',
+        'j4-title': 'รองประธานชมรมฯ',
+        'j4-desc': 'บริหารจัดการกิจกรรมภายในชมรม Digital Business Technology และส่งเสริมการเรียนรู้ด้านไอทีให้กับเพื่อนร่วมสถาบัน',
+        'j5-title': 'เป้าหมายในอนาคต',
+        'j5-desc': 'มุ่งมั่นพัฒนา AI Agents ที่สามารถแก้ปัญหาจริงให้กับธุรกิจและสังคมได้ในสเกลระดับประเทศ'
+    },
+    'en': {
+        'nav-home': 'Home',
+        'nav-journey': 'Journey',
+        'nav-projects': 'Works',
+        'nav-contact': 'Contact',
+        'terminal-title': 'System Activity Log',
+        'hero-title': 'Konkamon Phutthakhawee <br> <span style="color: var(--accent-color)">Jet Konkamon</span>.',
+        'hero-subtitle': 'AI Developer & Multimedia Specialist from Chachoengsao Vocational College, creating innovations that change the world through Code and Design.',
+        'hero-btn': 'View All Works',
+        'stat-gpa': 'GPA (High Voc.)',
+        'stat-award': 'Gold Medal Awards',
+        'stat-projects': 'Key Projects',
+        'stat-dedication': '% Dedication',
+        'skills-title': 'Skills & Expertise',
+        'skill-desc-1': 'Next.js, React, Tailwind, PWA',
+        'skill-desc-2': 'Gemini, Groq, OpenRouter, LLMs',
+        'skill-desc-3': 'Adobe After Effects, Premiere Pro, Illustrator',
+        'skill-desc-4': 'Python, Playwright, Node.js, Git',
+        'projects-title': 'Featured Works',
+        'p1-title': 'Jet Music',
+        'p1-desc': 'A music PWA with auto-lyric sync and high-quality audio streaming features.',
+        'p2-title': 'AI Google Form Filler',
+        'p2-desc': 'Automation tool using Gemini AI to accurately analyze and fill Google Forms.',
+        'p3-title': 'PR Media Motion Graphics',
+        'p3-desc': 'First Prize Gold Medal in the Provincial Level Media Competition, 2023.',
+        'tag-award': 'Gold Medal',
+        'achiev-title': 'Achievements & Certificates',
+        'ac-1-title': 'Gold Medal PR Media',
+        'ac-1-desc': 'First Prize (Provincial Level) - 2023',
+        'ac-2-title': 'Microsoft Professional',
+        'ac-2-desc': 'Competency in Word, Excel, PPT (Intermediate)',
+        'ac-3-title': 'Logo Design Competition',
+        'ac-3-desc': 'Participant in the Logo Design Competition, Term 2/2024.',
+        'contact-title': 'Want to work together?',
+        'contact-subtitle': 'You can reach out to discuss projects or exchange knowledge through these channels.',
+        'contact-email': 'Email Me',
+        'contact-toast': 'Email copied successfully!',
+        'journey-hero-title': 'The Journey of <br> <span style="color: var(--accent-color)">Jet Konkamon</span>.',
+        'journey-hero-subtitle': 'From a passion for technology to a developer driven by AI and creativity.',
+        'j1-title': 'Vocational Certificate (DBT)',
+        'j1-desc': 'Graduated with 3.40 GPA and represented the college in various skill competitions.',
+        'j2-title': 'Entering the AI & Motion World',
+        'j2-desc': 'Started AI integration studies and won 1st Place Gold Medal in provincial media PR design.',
+        'j3-title': 'High Voc. Certificate (DBT)',
+        'j3-desc': 'Maintained a 3.84 GPA while taking on the role of Vice President of the Professional Club.',
+        'j4-title': 'Club Vice President',
+        'j4-desc': 'Managed activities for the Digital Business Technology club and promoted IT learning among peers.',
+        'j5-title': 'Future Goals',
+        'j5-desc': 'Committed to developing AI Agents that solve real problems for business and society at a national scale.'
+    }
+};
+;
+
+let currentLang = localStorage.getItem('lang') || 'th';
+
+function toggleLanguage() {
+    currentLang = currentLang === 'th' ? 'en' : 'th';
+    localStorage.setItem('lang', currentLang);
+    updateContent();
+}
+
+function updateContent() {
+    const elements = document.querySelectorAll('[data-i18n]');
+    elements.forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[currentLang][key]) {
+            el.innerHTML = translations[currentLang][key];
+        }
+    });
+    
+    // Update button text
+    const langBtn = document.getElementById('lang-toggle');
+    if (langBtn) langBtn.textContent = currentLang === 'th' ? 'EN' : 'TH';
+}
+
+// AI Log Streaming
+const logs = [
+    { type: 'info', msg: 'Scanning local repository for changes...' },
+    { type: 'success', msg: 'Git tree optimized.' },
+    { type: 'info', msg: 'Connecting to Gemini Pro API...' },
+    { type: 'success', msg: 'AI Engine online (Latency: 142ms).' },
+    { type: 'info', msg: 'Indexing Jet Music project metadata...' },
+    { type: 'info', msg: 'Analyzing Playwright scripts for Form Filler...' },
+    { type: 'warn', msg: 'Memory usage increasing: 78%.' },
+    { type: 'success', msg: 'Garbage collection completed. Usage now 32%.' },
+    { type: 'info', msg: 'Agent "Somjoi" is standing by...' },
+    { type: 'info', msg: 'Portfolio status: 100% Ready.' }
+];
+
+function streamLogs() {
+    const container = document.getElementById('log-container');
+    if (!container) return;
+    
+    let index = 0;
+    setInterval(() => {
+        const log = logs[index];
+        const now = new Date();
+        const timeStr = `[${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}]`;
+        
+        const line = document.createElement('div');
+        line.className = 'log-line';
+        line.innerHTML = `<span class="log-time">${timeStr}</span> <span class="log-${log.type}">${log.type.toUpperCase()}:</span> ${log.msg}`;
+        
+        container.appendChild(line);
+        container.scrollTop = container.scrollHeight;
+        
+        // Remove old logs to keep performance
+        if (container.children.length > 20) {
+            container.removeChild(container.firstChild);
+        }
+        
+        index = (index + 1) % logs.length;
+    }, 3000);
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', () => {
+    updateContent();
+    streamLogs();
+});
+
+window.toggleLanguage = toggleLanguage;
